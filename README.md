@@ -1,85 +1,96 @@
 # Max-Cut Problem Solved Using Tabu Search Metaheuristic
 
-This repository contains a complete implementation and experimental evaluation of a **Tabu Search metaheuristic** for solving the **Maximum Cut (Max-Cut) problem**, an NP-complete combinatorial optimization problem.
+This repository contains a complete implementation and experimental evaluation of a **Tabu Search metaheuristic** for solving the **Maximum Cut (Max-Cut) problem**, a classical **NP-complete combinatorial optimization problem**.
 
-The project was developed as part of the course **Algorithmic and Combinatorial Optimisation** (Université Paris-Saclay).
+The project was developed as part of the course **Algorithmic and Combinatorial Optimisation** at **Université Paris-Saclay**.
 
 ---
 
 ## Problem Description
 
-Given an undirected weighted graph \( G = (V, E, w) \), the **Max-Cut problem** consists of partitioning the vertex set into two disjoint subsets such that the total weight of edges crossing the partition is maximized.
+Given an undirected weighted graph  
+\( G = (V, E, w) \),  
+the **Max-Cut problem** consists of partitioning the vertex set into two disjoint subsets such that the **sum of the weights of edges crossing the partition** is maximized.
 
-Max-Cut is NP-complete, making it a natural candidate for **metaheuristic approaches**.
+Because Max-Cut is NP-complete, exact algorithms do not scale to large instances, motivating the use of **metaheuristic approaches**.
 
 ---
 
 ## Methods Implemented
 
-The project implements and compares the following algorithms:
+The following algorithms are implemented and compared:
 
-- **Random baseline**
-- **Hill Climbing (local search)**
-- **Tabu Search metaheuristic**
+- **Random baseline** (best of multiple random solutions)
+- **Hill Climbing** (greedy local search)
+- **Tabu Search** (memory-based metaheuristic)
 
-To go beyond a basic implementation, several **optimizations of Tabu Search** are proposed and **evaluated experimentally**, as required in the project instructions.
+In addition to a standard Tabu Search, several **metaheuristic optimizations** are proposed and **evaluated experimentally**, as required in the project instructions.
 
 ---
 
 ## Solution Encoding
 
-- Each solution is encoded as a **binary vector** \( x \in \{0,1\}^n \)
-- A vertex flip defines the neighborhood
-- Fitness = total cut value
+- Solutions are encoded as **binary vectors** \( x \in \{0,1\}^n \)
+- Each bit represents the partition of a vertex
+- Neighborhood: **single-vertex flips**
+- Fitness: **total cut value**
 - **Incremental (delta) evaluation** is used for efficiency
 
-This encoding guarantees feasibility and is well-suited for local search.
+This encoding guarantees feasibility and is well suited for local search methods.
 
 ---
 
 ## Metaheuristic Optimizations Evaluated
 
 - Tabu tenure sensitivity analysis  
-- Candidate-list Tabu Search (Top-K moves)  
+- Candidate-list Tabu Search (Top-K promising moves)  
 - Runtime vs solution quality trade-off  
 - Flip-frequency analysis of vertices  
-- Search dynamics and diversification visualization  
+- Visualization of search dynamics and diversification  
 
 ---
 
 ## Experiments and Visualizations
 
-All experiments are reproducible and generate figures automatically.
+All experiments are fully reproducible and generate figures automatically.
 
 ---
 
-### 🔹 Hill Climbing vs Tabu Search (Final Cuts)
+### Hill Climbing vs Tabu Search (Final Cuts)
 
-**Hill Climbing result (local optimum):**
+**Hill Climbing (local optimum):**
 
 ![Hill Climbing Cut](cut_hc.png)
 
-**Tabu Search result (better cut):**
+Hill Climbing converges quickly but gets trapped in a local optimum.
+
+**Tabu Search (improved solution):**
 
 ![Tabu Search Cut](cut_tabu.png)
 
+Tabu Search escapes local optima and achieves a higher cut value.
+
 ---
 
-### 🔹 Search Dynamics
+### Search Dynamics
 
-Evolution of the cut value during the search, showing how Tabu Search escapes local optima:
+**Hill Climbing vs Tabu Search evolution:**
 
 ![Search Dynamics](curve_maxcut.png)
 
-Detailed view of a single Tabu Search run:
+This plot shows that Hill Climbing stagnates early, while Tabu Search continues to explore and improve the best-so-far solution.
+
+**Single Tabu Search run:**
 
 ![Single Tabu Run](curve_tabu_single_run.png)
 
+The oscillations highlight diversification around a stable best solution.
+
 ---
 
-### 🔹 Tabu Tenure Sensitivity
+### Tabu Tenure Sensitivity
 
-Influence of tabu tenure on solution quality for different graph sizes:
+Influence of tabu tenure on solution quality:
 
 **n = 50**
 
@@ -93,27 +104,31 @@ Influence of tabu tenure on solution quality for different graph sizes:
 
 ![Tenure Sensitivity n=120](tenure_sensitivity_n120.png)
 
+Results show that Tabu Search is robust to reasonable parameter variations.
+
 ---
 
-### 🔹 Search Behavior Analysis
+### Search Behavior Analysis
 
-Flip-frequency analysis showing how often each vertex is modified during Tabu Search:
+**Flip-frequency analysis:**
 
 ![Flip Frequency](flip_frequency.png)
 
+This plot highlights vertices that are frequently modified during the search, providing insight into the exploration process.
+
 ---
 
-### 🔹 Animated Simulation
+### Animated Simulations
 
-Animated visualization of Tabu Search showing node flips and synchronized evolution of the cut value:
-
-**Tabu Search animation:**
+**Tabu Search graph evolution:**
 
 ![Tabu Simulation](tabu_sim.gif)
 
-**Synchronized graph + objective curve:**
+**Synchronized graph and objective value evolution:**
 
 ![Tabu Simulation Synced](tabu_sim_synced.gif)
+
+These animations provide an intuitive understanding of Tabu Search dynamics.
 
 ---
 
@@ -124,8 +139,8 @@ Animated visualization of Tabu Search showing node flips and synchronized evolut
 ```bash
 pip install matplotlib networkx pillow
 ```
-
 ### Run all experiments and visualizations
+
 ```
 python src/maxcut_tabu.py
 ```
